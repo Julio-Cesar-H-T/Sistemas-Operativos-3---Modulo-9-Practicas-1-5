@@ -1,0 +1,59 @@
+Comandos utilizados, práctica laboratorio 9.5: Infraestructura como Código (IaC) y Automatización.
+
+Uso de Playbooks en Ansible 
+============================================
+
+#Crear Playbook para instalar Notepad++ en Windows (ansible2)
+
+#Crear el archivo del playbook:
+
+sudo nano install_notepadpp.yml
+
+>
+
+- name: Instalar Notepad++ en Windows
+  hosts: win
+  tasks:
+    - name: Descargar instalador de Notepad++
+      win_get_url:
+        url: https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.6.8/npp.8.6.8.Installer.x64.exe
+        dest: C:\\Users\\ansible\\Downloads\\npp_installer.exe
+
+    - name: Instalar Notepad++
+      win_package:
+        path: C:\\Users\\ansible\\Downloads\\npp_installer.exe
+        state: present
+        arguments: /S
+
+
+#Ejecutar el playbook:
+ansible-playbook install_notepadpp.yml
+
+
+
+#Crear Playbook para instalar NGINX en Linux (ansible1)
+
+#Crear el archivo del playbook:
+
+sudo nano install_nginx.yml
+>
+- name: Instalar NGINX en Linux
+  hosts: linux
+  become: true
+  tasks:
+    - name: Instalar nginx
+      dnf:
+        name: nginx
+        state: present
+
+    - name: Iniciar y habilitar nginx
+      systemd:
+        name: nginx
+        enabled: true
+        state: started
+
+#Ejecutar el playbook:
+ansible-playbook install_nginx.yml
+
+#Verificar la instalación: Desde la VM cliente Linux:
+sudo systemctl status nginx
