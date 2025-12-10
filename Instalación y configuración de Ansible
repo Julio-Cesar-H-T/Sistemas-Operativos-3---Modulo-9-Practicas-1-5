@@ -39,6 +39,20 @@ nano /etc/ansible/hosts
 [win]
 10.0.0.24 ansible_user=ansible ansible_password=1 ansible_connection=winrm ansible_winrm_transport=basic ansible_port=5985
 
-
 ansible linux -m ping -i /etc/ansible/hosts
 ansible win -m win_ping -i /etc/ansible/hosts
+======================================================================================================
+======================================================================================================
+Troubleshooting
+
+Si el ping a windows no funciona:
+
+sudo /usr/bin/python3.12 -m ensurepip --upgrade
+
+/usr/bin/python3.12 -m pip --version
+
+sudo /usr/bin/python3.12 -m pip install --upgrade pip setuptools wheel
+
+sudo /usr/bin/python3.12 -m pip install pywinrm "pywinrm[credssp]" requests-ntlm xmltodict
+
+/usr/bin/python3.12 -c "import winrm; print('winrm OK')"
