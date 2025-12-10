@@ -86,6 +86,26 @@ nano create_user_and_install_bashtop.yml
 
 ansible-playbook create_user_and_install_bashtop.yml
 
+
+---
+- hosts: linux
+  become: yes
+
+  tasks:
+    - name: Agregar usuario
+      user:
+	name: adrian123
+        password: "{{ 'adrian123' | password_hash('sha512') }}"
+        groups: sudo
+        append: yes
+        shell: /bin/bash
+
+    - name: Instalar Bashtop
+      apt:
+	name: bashtop
+        update_cache: yes
+        state: present
+
 =================================================
 
 =================================================
